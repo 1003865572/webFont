@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h3>居中问题</h3>
+    <p>水平居中</p>
+    <p>1. inline-block + text-align</p>
+    <!--
+    <style media="screen">
+      .parent{
+        text-align: center;
+      }
+      .child{
+        display: inline-block;
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+
+    <p>2 .table + margin</p>
+    <!--
+    <style media="screen">
+      .parent{
+      }
+      .child{
+        display: table;
+        margin: 0 auto;
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+
+    <p>3. absolute + transform</p>
+    <!-- <style media="screen">
+      .parent{
+        position: relative;
+      }
+      .child{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>4. flex + margin</p>
+    <!-- <style media="screen">
+      .parent{
+        display: flex;
+      }
+      .child{
+        margin: 0 auto;
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>5. flex + justify-content</p>
+    <!-- <style media="screen">
+      .parent{
+        display: flex;
+        justify-content: center;
+      }
+      .child{
+
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+
+    <p>垂直居中</p>
+    <p>1. table-cell + vertical-align</p>
+    <!-- <style media="screen">
+      .parent{
+        display: table-cell;
+        vertical-align: middle;
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+      }
+      .child{
+
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>2. absolute + transform</p>
+    <!-- <style media="screen">
+      .parent{
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+        position: relative;
+      }
+      .child{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+
+    <p>3. flex + align-items</p>
+    <!-- <style media="screen">
+      .parent{
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+        display: flex;
+        align-items: center;
+      }
+      .child{
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>水平居中和垂直居中</p>
+    <p>1. absolute + transform</p>
+    <!-- <style media="screen">
+      .parent{
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+        position: relative;
+      }
+      .child{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>2. inline-block + text-align + table-cell + vertical-align</p>
+    <!-- <style media="screen">
+      .parent{
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .child{
+        display: inline-block;
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <p>3. flex + justify-content + align-tiems</p>
+    <!-- <style media="screen">
+      .parent{
+        height: 150px;
+        width: 150px;
+        background: #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .child{
+      }
+    </style>
+    <div class="parent">
+      <div class="child">
+        demo
+      </div>
+    </div> -->
+    <h3>多列布局</h3>
+    <p>定宽 + 自适应</p>
+    <p>使用 float + overflow</p>
+
+    
+
+  </body>
+</html>
