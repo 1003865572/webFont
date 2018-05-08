@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Canvas tutorial</title>
+        <script>
+            function drow() {
+                var tutorial = document.getElementById('tutorial');
+                if (tutorial.getContext) {
+                    var ctx = tutorial.getContext('2d');
+                    ctx.fillStyle='red';
+                    ctx.fillRect(10,10, 60, 60);
+                    
+                    ctx.clearRect(15,15,30,30);
+                    
+                    ctx.fillStyle = '#ccc';
+                    ctx.strokeRect(20,20,20,20);
+
+                }
+            }
+        </script>
+        <style>
+            body{
+                background: #ccc;
+            }
+            #tutorial{
+                border: 1px solid #eee;
+            }
+        </style>
+    </head>
+    <body onload="drow();">
+        <canvas id="tutorial" width="150" height="150"></canvas>
+    </body>
+</html>
