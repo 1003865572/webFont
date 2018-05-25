@@ -1,0 +1,36 @@
+<style type="less">
+    .index {
+        .page__desc, .page__title{
+            text-align: center;
+        }
+    }
+</style>
+<template>
+    <view class="index page">
+        <view class="page__hd">
+            <view class="page__title">单词教练</view>
+            <view class="page__desc">刻意练习法，快速记单词</view>
+        </view>
+        <view class="page__bd page__bd_spacing">
+            <button class="weui-btn" type="primary" @tap="start" >立刻开始</button>
+        </view>
+        <view class="page__ft">
+            
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class Index extends wepy.page {
+        config = {
+            'navigationBarTitleText': '单词教练'
+        }
+        methods = {
+            start () {
+                wx.navigateTo({ url: './practice' });
+            }
+        };
+    }
+</script>
