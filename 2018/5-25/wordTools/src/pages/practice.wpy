@@ -36,17 +36,6 @@
                 }
             }
         }
-        .word{
-            width: 100vw;
-            text-align: center;
-        }
-        .user_input{
-            text-align: center;
-            view{
-                font-size: 40rpx;
-                display: inline-block;
-            }
-        }
         .ctrl{
             .tools{ 
                 width: 12vw; 
@@ -57,17 +46,72 @@
             }
         }
     }
+.word_content{
+    margin-top: 100rpx;
+    height: 350rpx;
+    /* border: 1px solid #ccc; */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .top_line, .bottom_line{
+        position: absolute;
+        left: 0;
+        height: 3rpx;
+        width: 100%;
+        background: #ccc;
+    }
+    .top_line{
+        top: 0;
+    }
+    .bottom_line{
+        bottom: 0;
+    }
+}
+.word_text{
+    text-align: center;
+    display: block;
+    .en{
+        letter-spacing: 2rpx;
+        font-weight: bold;
+    }
+}
+.user_input{
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    view{
+        font-size: 40rpx;
+        display: block;
+        width: 50rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        text-align: center;
+        background: #D0D3DC;
+        font-size: 38rpx;
+        margin: 10rpx 5rpx;
+        border-radius: 7rpx;
+    }
+}
+.word_text, .user_input{
+    height: 100rpx;
+    line-height: 100rpx;
+}
 </style>
 <template>
-    <view class="index page">
+    <view class="index page" style="text-align: center">
         <view class="page__bd page__bd_spacing">
-            <view>
-                <view class="word" >
-                    {{words[currentWordIndex].en}}: {{words[currentWordIndex].zh}}
-                </view>
+            <view class="word_content" >
+                <view class="top_line" />
+                <view class="bottom_line" />
+                <view class="word_text" ><text class="en" >{{words[currentWordIndex].en}}</text>: <text>{{words[currentWordIndex].zh}}</text></view>
                 <view class="user_input" >
-                    <repeat for="{{userInput}}" index="index" key="index" item="letter">
-                        <view>{{letter}}</view>
+                    <!-- userInput -->
+                    <!-- <view>{{userInput[index]}}: "{{index}}"</view> -->
+                    <repeat for="{{words[currentWordIndex].en}}" index="index" key="index" item="letter">
+                        <view>{{userInput[index]}}</view>
                     </repeat>
                 </view>
             </view>
@@ -93,19 +137,18 @@
 
 <script>
     import wepy from 'wepy';
-    let data = [
+    let wordsData = [
         {en: 'children', zh: '儿童'},
         {en: 'using', zh: '使用'},
         {en: 'have', zh: '有'},
         {en: 'need', zh: '需要'},
         {en: 'also', zh: '也，同样'},
         {en: 'only', zh: '只有'},
-        {en: 'more', zh: 'more'},
-        {en: 'should', zh: 'should'},
+        {en: 'more', zh: '更多'},
+        {en: 'should', zh: '渲染'},
         {en: 'method', zh: '方法'},
         {en: 'extends', zh: '继承'}
     ];
-    console.log(data);
     export default class Index extends wepy.page {
         config = {
             'navigationBarTitleText': '单词教练'
@@ -116,18 +159,7 @@
                 ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
                 ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
             ],
-            words: [
-                {en: 'children', zh: '儿童'},
-                {en: 'using', zh: '使用'},
-                {en: 'have', zh: '有'},
-                {en: 'need', zh: '需要'},
-                {en: 'also', zh: '也，同样'},
-                {en: 'only', zh: '只有'},
-                {en: 'more', zh: 'more'},
-                {en: 'should', zh: 'should'},
-                {en: 'method', zh: '方法'},
-                {en: 'extends', zh: '继承'}
-            ],
+            words: wordsData,
             currentWordIndex: 0,
             userInput: ''
         }
@@ -135,26 +167,28 @@
             keyUp(val) {
                 console.log(val);
                 switch (val) {
-                    case 'play':
-                        break;
-                    case 'enter':
-                        if (this.userInput !== this.words[this.currentWordIndex].en) {
-                            this.userInput = '';
-                            return;
-                        }
-                        if (this.currentWordIndex === this.words.length - 1) {
-                            this.currentWordIndex = 0;
-                        } else {
-                            this.currentWordIndex++;
-                        }
-                        break;
-                    case 'delete':
-                        this.userInput = this.userInput.length - 1
-                        break;
-                
-                    default:
-                        this.userInput += val;
-                        break;
+                case 'play':
+                    break;
+                case 'enter':
+                    if (this.userInput !== this.words[this.currentWordIndex].en) {
+                        this.userInput = '';
+                        return;
+                    }
+                    if (this.currentWordIndex === this.words.length - 1) {
+                        this.currentWordIndex = 0;
+                    } else {
+                        this.currentWordIndex++;
+                        this.userInput = '';
+                    }
+                    break;
+                case 'delete':
+                    if (this.userInput) {
+                        this.userInput = this.userInput.substr(0, this.userInput.length - 1);
+                    }
+                    break;
+                default:
+                    this.userInput += val;
+                    break;
                 }
             },
             toggle (id) {
