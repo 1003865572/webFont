@@ -71,9 +71,10 @@
 .word_text{
     text-align: center;
     display: block;
+    font-weight: bold;
     .en{
         letter-spacing: 2rpx;
-        font-weight: bold;
+        transition: all .2s ease;
     }
 }
 .user_input{
@@ -106,13 +107,17 @@
             <view class="word_content" >
                 <view class="top_line" />
                 <view class="bottom_line" />
-                <view class="word_text" ><text class="en" >{{words[currentWordIndex].en}}</text>: <text>{{words[currentWordIndex].zh}}</text></view>
+                <view class="word_text" ><text class="en" style="opacity: {{userInput !== '' ? 0 : 1}}; color: {{currentIsInputError[0] === true ? 'red' : '#000'}}" >{{words[currentWordIndex].en}}:</text><text>{{words[currentWordIndex].zh}}</text></view>
                 <view class="user_input" >
-                    <!-- userInput -->
-                    <!-- <view>{{userInput[index]}}: "{{index}}"</view> -->
                     <repeat for="{{words[currentWordIndex].en}}" index="index" key="index" item="letter">
                         <view>{{userInput[index]}}</view>
                     </repeat>
+                </view>
+                <view wx:if="{{currentIsInputError[0] === true}}">
+                    输入错误
+                </view>
+                <view wx:if="{{currentIsInputError[0] === false && currentIsInputError[1] && currentIsInputError[1] > 0}}">
+                    多来练次
                 </view>
             </view>
         </view>
@@ -161,28 +166,56 @@
             ],
             words: wordsData,
             currentWordIndex: 0,
-            userInput: ''
+            currentIsInputError: [],
+            userInput: '',
+            status: {
+                errors: [],
+                backspaces: [],
+            }
+        }
+        checketInput () {
+            return this.userInput === this.words[this.currentWordIndex].en
         }
         methods = {
             keyUp(val) {
-                console.log(val);
                 switch (val) {
                 case 'play':
                     break;
                 case 'enter':
-                    if (this.userInput !== this.words[this.currentWordIndex].en) {
-                        this.userInput = '';
-                        return;
-                    }
-                    if (this.currentWordIndex === this.words.length - 1) {
-                        this.currentWordIndex = 0;
+                    if (this.checketInput()) {
+                        console.log('正确')
+                        // 错误中
+                        if (this.currentIsInputError !== []) {
+                            this.currentIsInputError[1]--
+                            this.currentIsInputError[0] = false
+                            if (this.currentIsInputError[1] === 0 || this.currentIsInputError[1] < 0) {
+                                this.currentIsInputError = []
+                            }
+                        } else {
+                            if (this.currentWordIndex === this.words.length - 1) {
+                                this.currentWordIndex = 0;
+                            } else {
+                                this.currentWordIndex++;
+                                this.currentIsInputError = [];
+                            }
+                        }
+                        // 一直正确
                     } else {
-                        this.currentWordIndex++;
-                        this.userInput = '';
+                        console.log('错误')
+                        this.currentIsInputError = [true, 5];
                     }
+                    this.userInput = '';
+                    return 
+                        if (this.currentIsInputError[1] && this.currentIsInputError[1] > 0) {
+                            this.currentIsInputError[1]--
+                        }
                     break;
                 case 'delete':
                     if (this.userInput) {
+                        this.status.backspaces.push({
+                            en: this.words[this.currentWordIndex].en,
+                            userInput: this.userInput
+                        });
                         this.userInput = this.userInput.substr(0, this.userInput.length - 1);
                     }
                     break;
