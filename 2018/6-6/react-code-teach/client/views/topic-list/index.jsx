@@ -5,19 +5,23 @@ import {
 } from 'mobx-react';
 import PropTypes from 'prop-types';
 
-import { AppState } from '../../store/app-state'
+import AppState from '../../store/app-state'
 
 @inject('appState') @observer
 export default class TopicList extends React.Component {
   static propTypes = {
     appState: PropTypes.instanceOf(AppState).isRequired,
   }
-  componentDidMount() {
-    // do something here
+  asyncBootstrap = () => {
+    console.log('asyncBootstrap')
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.props.appState.count = 50
+        resolve(true)
+      }, 1000)
+    })
   }
   changeName = (event) => {
-    // const { appState } = this.props;
-    // appState.name = event.target.value
     this.props.appState.changeName(event.target.value)
   }
   render() {

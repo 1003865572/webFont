@@ -1,30 +1,30 @@
 import {
   observable,
   computed,
-  // autorun,
   action,
-} from 'mobx';
+} from 'mobx'
 
-export class AppState {
-  @observable const = 0
-  @observable name = 'Jokcy'
-
-  @computed get msg() {
-    return `${this.name} say count is ${this.const}`;
+export default class AppState {
+  constructor({ count, name } = { count: 0, name: 'Jokcy' }) {
+    this.count = count
+    this.name = name
   }
-
+  @observable count
+  @observable name
+  @computed get msg() {
+    return `${this.name} say count is ${this.count}`
+  }
   @action add() {
-    this.const += 1
+    this.count += 1
   }
   @action changeName(name) {
     this.name = name
   }
+  toJson() {
+    return {
+      count: this.count,
+      name: this.name,
+    }
+  }
 }
 
-const appState = new AppState();
-
-// autorun(() => {
-//   console.log(appState.msg)
-// })
-
-export default appState
