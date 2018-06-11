@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Routes from '../config/router';
+import AppBar from './layout/app-bar'
 
 export default class App extends React.Component {
   componentWillMount() {
@@ -9,11 +9,7 @@ export default class App extends React.Component {
 
   render() {
     return [
-      <div key="nav">
-        this is a app<br />
-        <Link to="/">home</Link><br />
-        <Link to="/detail">detail</Link><br />
-      </div>,
+      <AppBar key="appBar" />,
       <Routes key="routes" />,
     ]
   }
