@@ -1,6 +1,6 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
-// import { withStyles } from 'material-ui/styles'
+import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
 
 import AppBar from 'material-ui/AppBar'
 import ToolBar from 'material-ui/Toolbar'
@@ -9,14 +9,19 @@ import Typography from 'material-ui/Typography'
 import IconButton from 'material-ui/IconButton'
 import HomeIcon from 'material-ui-icons/Home'
 
-
-/*
-<Button variant="raised" color="primary">
-Primary
-</Button>
- */
-
+const styles = {
+  root: {
+    width: '100%',
+  },
+  flex: {
+    flex: 1,
+  },
+}
+// instanceOf
 class MainAppBar extends React.Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+  }
   /* eslint-disable */
   onHomeIconClick = () => {
     console.log('home click')
@@ -29,14 +34,15 @@ class MainAppBar extends React.Component {
   }
   /* eslint-enable */
   render() {
+    const { classes } = this.props
     return (
-      <div>
+      <div className={classes.root} >
         <AppBar>
           <ToolBar>
             <IconButton color="default" onClick={this.onHomeIconClick} >
               <HomeIcon />
             </IconButton>
-            <Typography type="title" color="inherit">
+            <Typography type="title" color="inherit" className={classes.flex} >
               JNode
             </Typography>
             <Button variant="raised" color="primary" onClick={this.createButtonClick} >
@@ -52,4 +58,4 @@ class MainAppBar extends React.Component {
   }
 }
 
-export default MainAppBar
+export default withStyles(styles)(MainAppBar)
