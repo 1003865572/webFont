@@ -15,6 +15,9 @@ export const topicPrimaryStyle = (theme) => ({
     marginRight: 10,
     fontSize: '12px',
   },
+  top: {
+    backgroundColor: theme.palette.accent[500],
+  },
 })
 
 export const topicSecondaryStyles = (theme) => ({

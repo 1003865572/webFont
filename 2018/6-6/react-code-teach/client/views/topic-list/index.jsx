@@ -6,69 +6,75 @@ import {
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import Tabs, { Tab } from 'material-ui/Tabs'
+import queryString from 'query-string'
 import List from 'material-ui/List'
 import { CircularProgress } from 'material-ui/Progress'
 import Container from '../layout/container'
 import TopicListItem from './list-item'
-import { AppState, TopicStore } from '../../store/store'
+import { TopicStore } from '../../store/store'
+import { tabs } from '../../util/variable-define'
 
 @inject(stores => {
   return {
-    appState: stores.appState,
     topicStore: stores.topicStore,
   }
 }) @observer
 class TopicList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      tabIndex: 0,
-    }
+  static contextTypes = {
+    router: PropTypes.object,
   }
   componentDidMount() {
-    this.props.topicStore.fetchTopcis()
+    this.getTopics()
   }
-  changeTab = (e, index) => {
-    this.setState({ tabIndex: index })
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location.search !== this.props.location.search) {
+      const tab = this.getTab(nextProps.location.search)
+      this.props.topicStore.fetchTopcis(tab)
+    }
   }
-  topicListClick = () => {
-
+  getTopics = () => {
+    const tab = this.getTab()
+    this.props.topicStore.fetchTopcis(tab)
+  }
+  getTab = (search) => {
+    const { location } = this.props
+    search = search || location.search
+    const query = queryString.parse(search)
+    return query.tab || 'all'
+  }
+  changeTab = (e, value) => {
+    const { router } = this.context
+    router.history.push({
+      pathname: '/list',
+      search: `?tab=${value}`,
+    })
+  }
+  topicListClick = (topic) => {
+    this.context.router.history.push(`/detail/${topic.id}`)
   }
   render() {
-    const { tabIndex } = this.state
-    const { appState, topicStore } = this.props
-    console.log(appState)
+    const { topicStore } = this.props
     const topicList = topicStore.topics
     const syncingTopics = topicStore.syncing
-    // topicStore.syncing
-    // const topic = {
-    //   title: 'This is title',
-    //   username: 'doujiao',
-    //   reply_count: 0,
-    //   visit_count: 0,
-    //   create_at: '111',
-    //   tab: 'share',
-    // }
     return (
       <Container>
         <Helmet>
           <title>this is topicList</title>
           <meta name="description" content="this is description" />
         </Helmet>
-        <Tabs value={tabIndex} onChange={this.changeTab} >
-          <Tab label="全部" />
-          <Tab label="精华" />
-          <Tab label="分享" />
-          <Tab label="问答" />
-          <Tab label="招聘" />
-          <Tab label="客户端测试" />
+        <Tabs value={this.getTab()} onChange={this.changeTab} >
+          {
+            Object.keys(tabs).map((tab) => (
+              <Tab label={tabs[tab]} value={tab} key={tab} />
+            ))
+          }
         </Tabs>
         <List>
           {
             topicList.map(topic => (
               <TopicListItem
                 key={topic.id}
-                onClick={this.topicListClick}
+                onClick={() => this.topicListClick(topic)}
                 topic={topic}
               />
             ))
@@ -76,7 +82,13 @@ class TopicList extends React.Component {
         </List>
         {
           syncingTopics ? (
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                padding: '40px 0',
+              }}
+            >
               <CircularProgress color="primary" size={100} />
             </div>
           ) : null
@@ -86,7 +98,11 @@ class TopicList extends React.Component {
   }
 }
 TopicList.wrappedComponent.propTypes = {
-  appState: PropTypes.instanceOf(AppState),
   topicStore: PropTypes.instanceOf(TopicStore),
 }
+
+TopicList.propTypes = {
+  location: PropTypes.object.isRequired,
+}
+
 export default TopicList
