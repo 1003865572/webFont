@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
+import {
+  inject,
+  observer,
+} from 'mobx-react'
 
 import AppBar from 'material-ui/AppBar'
 import ToolBar from 'material-ui/Toolbar'
@@ -17,24 +21,37 @@ const styles = {
     flex: 1,
   },
 }
-// instanceOf
+
+@inject(stores => ({
+  appState: stores.appState,
+})) @observer
 class MainAppBar extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
   }
-  /* eslint-disable */
-  onHomeIconClick = () => {
-    console.log('home click')
+  static contextTypes = {
+    router: PropTypes.object,
   }
+  onHomeIconClick = () => {
+    this.context.router.history.push({
+      pathname: '/list',
+      search: '?tab=good',
+    })
+  }
+  /* eslint-disable */
   createButtonClick = () => {
     console.log('create button')
   }
+  /* eslint-enable */
   loginButtonClick = () => {
     console.log('login')
+    this.context.router.history.push({
+      pathname: '/user/login',
+    })
   }
-  /* eslint-enable */
   render() {
-    const { classes } = this.props
+    const { classes, appState } = this.props
+    const user = appState.user.info
     return (
       <div className={classes.root} >
         <AppBar>
@@ -49,7 +66,7 @@ class MainAppBar extends React.Component {
               新建话题
             </Button>
             <Button variant="flat" color="default" onClick={this.loginButtonClick}>
-              登录
+              {user.loginname ? user.loginname : '登录'}
             </Button>
           </ToolBar>
         </AppBar>
@@ -58,4 +75,7 @@ class MainAppBar extends React.Component {
   }
 }
 
+MainAppBar.wrappedComponent.propTypes = {
+  appState: PropTypes.object.isRequired,
+}
 export default withStyles(styles)(MainAppBar)
