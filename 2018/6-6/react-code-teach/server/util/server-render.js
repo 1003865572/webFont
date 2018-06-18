@@ -14,17 +14,26 @@ const colors = require('material-ui/colors')
 
 const getStoreState = (stores) => {
   return Object.keys(stores).reduce((result, storeName) => {
-    result[storeName] = stores[storeName].toJson()
+    if (stores[storeName]) {
+      result[storeName] = stores[storeName].toJson()
+    }
     return result
   }, {})
 }
 
 module.exports = (bundle, template, req, res) => {
   return new Promise((resolve, reject) => {
+    const user = req.session.user
     const createStoreMap = bundle.createStoreMap
     const createApp = bundle.default
     const routerContext = {}
     const stores = createStoreMap()
+
+    if (user) {
+      stores.appState.user.isLogin = true
+      stores.appState.user.info = user
+    }
+
     const sheetsRegistry = new SheetsRegistry()
     const jss = create(preset())
     jss.options.createGenerateClassName = createGenerateClassName

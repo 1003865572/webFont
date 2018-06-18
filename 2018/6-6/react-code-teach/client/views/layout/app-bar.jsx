@@ -38,16 +38,20 @@ class MainAppBar extends React.Component {
       search: '?tab=good',
     })
   }
-  /* eslint-disable */
   createButtonClick = () => {
-    console.log('create button')
+    this.context.router.history.push('/topic/create')
   }
-  /* eslint-enable */
   loginButtonClick = () => {
-    console.log('login')
-    this.context.router.history.push({
-      pathname: '/user/login',
-    })
+    const { appState } = this.props
+    if (appState.user.isLogin) {
+      this.context.router.history.push({
+        pathname: '/user/info',
+      })
+    } else {
+      this.context.router.history.push({
+        pathname: '/user/login',
+      })
+    }
   }
   render() {
     const { classes, appState } = this.props

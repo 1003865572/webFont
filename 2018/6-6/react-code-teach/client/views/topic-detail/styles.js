@@ -50,9 +50,9 @@ export const topicDetailStyle = (theme) => {
       '& .CodeMirror': {
         height: 150,
         minHeight: 'auto',
-        // '& .CodeMirror-scroll': {
-
-        // },
+        '& .CodeMirror-scroll': {
+          minHeight: 'auto',
+        },
       },
     },
   }

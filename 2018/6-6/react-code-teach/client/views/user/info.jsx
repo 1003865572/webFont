@@ -13,8 +13,8 @@ import ListItemText from 'material-ui/List/ListItemText'
 import UserContainer from './user'
 import infoStyle from './styles/info'
 
-const TopicList = ({ topic }) => (
-  <ListItem button >
+const TopicList = ({ topic, onClick }) => (
+  <ListItem button onClick={onClick}>
     <Avatar src={topic.author.avatar_url} />
     <ListItemText
       primary={topic.title}
@@ -25,6 +25,7 @@ const TopicList = ({ topic }) => (
 
 TopicList.propTypes = {
   topic: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 @inject(stores => ({
@@ -38,13 +39,18 @@ class Info extends React.Component {
     const { appState } = this.props
     if (!appState.user.isLogin) {
       this.context.router.history.replace('/user/login')
-    } else {
+    } else if (appState.user.info.loginname) {
       appState.getUserDetail()
+      appState.getUserCollection()
     }
+  }
+  goToTopic = (id) => {
+    this.context.router.history.push(`/detail/${id}`)
   }
   render() {
     const { classes, appState } = this.props
     const { recentTopics, recentReplies, syncing } = appState.user.detail
+    const { colletions } = appState.user
     return (
       <UserContainer>
         <div className={classes.root} >
@@ -53,7 +59,11 @@ class Info extends React.Component {
             {
               syncing ? 'loading...' : (
                 recentTopics.map(item => (
-                  <TopicList key={item.id} topic={item} />
+                  <TopicList
+                    key={item.id}
+                    topic={item}
+                    onClick={() => this.goToTopic(item.id)}
+                  />
                 ))
               )
             }
@@ -63,13 +73,28 @@ class Info extends React.Component {
             {
               syncing ? 'loading...' : (
                 recentReplies.map(item => (
-                  <TopicList key={item.id} topic={item} />
+                  <TopicList
+                    key={item.id}
+                    topic={item}
+                    onClick={() => this.goToTopic(item.id)}
+                  />
                 ))
               )
             }
           </div>
           <div className={classes.item} >
             <h4 className={classes.title} >收藏的话题</h4>
+            {
+              colletions.syncing ? 'loading...' : (
+                colletions.list.map(item => (
+                  <TopicList
+                    key={item.id}
+                    onClick={() => this.goToTopic(item.id)}
+                    topic={item}
+                  />
+                ))
+              )
+            }
           </div>
         </div>
       </UserContainer>

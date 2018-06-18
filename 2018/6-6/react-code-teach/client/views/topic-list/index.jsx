@@ -42,6 +42,13 @@ class TopicList extends React.Component {
     const query = queryString.parse(search)
     return query.tab || 'all'
   }
+  asyncBootstrap() {
+    const query = queryString.parse(this.props.location.search)
+    const { tab } = query
+    return this.props.topicStore.fetchTopcis(tab || 'all')
+      .then(() => true)
+      .catch(() => false)
+  }
   changeTab = (e, value) => {
     const { router } = this.context
     router.history.push({
