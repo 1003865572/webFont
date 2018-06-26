@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{ background: black; text-align: center }
+        #c1{ background: white; }
+    </style>
+    <script>
+        window.onload = function () {
+            let oC = document.querySelector('#c1');
+            let gd = oC.getContext('2d');
+
+            // 检车圆形的位置
+            let cx = 300, cy = 300, r = 100;
+
+            oC.onmousemove = function (ev) {
+                let a = ev.offsetX - cx;
+                let b = ev.offsetY - cy;
+
+                let dis = Math.sqrt(a*a, b*b)
+                gd.beginPath();
+                gd.arc(cx, cy, r, 0, 2 * Math.PI, true);
+
+                if (dis<=r) {
+                    // gd.arc(cx, cy, r, 0, 2 * Math.PI, true);
+                    gd.fillStyle = 'yellow';
+                } else {
+                    gd.fillStyle = '#ccc';
+                }
+                gd.fill();
+            }
+
+
+            // 检测矩形的位置
+            // let l= 50, t = 50, w = 200,h = 200;
+            // oC.onmousemove = function (ev) {
+            //     gd.clearRect(0, 0, oC.width, oC.height);
+            //     if (
+            //         ev.offsetX >= l&&
+            //         ev.offsetX <= l + w &&
+            //         ev.offsetY >= t &&
+            //         ev.offsetY <= t + h
+            //     ) {
+            //         gd.strokeStyle = 'red'
+            //         gd.strokeRect(l, t, w, h);
+            //     } else {
+            //         gd.strokeStyle = 'black'
+            //         gd.strokeRect(l, t, w, h);
+            //     }
+            // }
+            // gd.strokeRect(l, t, w, h);
+
+            // 动画
+            // let l = 50;
+            // let r = 50;
+            // setInterval(() => {
+            //     gd.clearRect(0, 0, oC.width, oC.height)
+            //     l+=5;
+            //     gd.strokeRect(l, r, 300, 100);
+            // }, 16)
+        }
+    </script>
+</head>
+<body>
+    <canvas id="c1" width="800" height="500" ></canvas>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn1">this</button>
+    <script>
+        let oBtn = document.querySelector('#btn1')
+        oBtn.onclick = function () {
+            let f = function() {
+                console.log(this)
+            }
+            f();
+        }
+        var Fn = function (name, sex) {
+            this.name = name || ''
+            this.sex = sex || null
+        }
+        let xinglong_shi = new Fn('xinglong.shi', 'man')
+        console.log(xinglong_shi)
+        console.log(xinglong_shi.__proto__.constructor === Fn)
+        // let obj = {a: 1}
+        class A {
+          constructor() {
+
+          }
+        }
+        let obj = new A()
+        console.log(obj)
+        console.log(obj.__proto__.constructor.name === 'Object')
+        if(typeof(obj) == "object" && Object.prototype.toString.call(obj).toLowerCase() == "[object object]" && !obj.length){
+          // alert('是JSON对象');
+        }
+
+    </script>
+</body>
+</html>

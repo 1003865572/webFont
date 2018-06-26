@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var obj1 = {
+        name: 'ziwei',
+        arr : [1,2,3],
+        data: {
+          name: {
+            name: 'xinglong.shi',
+            sex: 'man'
+          },
+          sex: 'man'
+        }
+      }
+      console.log(obj1.hasOwnProperty('name'))
+      var shallowCopy = function (source, target = {}) {
+        for (key in source) {
+          if (source.hasOwnProperty(key)) { // 不拷贝 构造函数
+            target[key] = source[key]
+          }
+        }
+        return target
+      }
+      let deepCopy = function (source, target = {}) {
+        for (key in source) {
+          if (source.hasOwnProperty(key)) {
+            if (typeof source[key] === 'object') {
+              target[key] = deepCopy(source[key], target[key])
+            } else {
+              target[key] = source[key]
+            }
+          }
+        }
+        return target
+      }
+      console.log('测试 shallowCopy')
+      let obj2 = shallowCopy(obj1)
+      console.log(obj2.arr === obj1.arr) //true
+      console.log(obj2.data.name === obj1.data.name)
+      console.log('测试 deepCopy')
+      let obj3 = deepCopy(obj1)
+      console.log(obj3.arr === obj1.arr) // false
+      console.log(obj3.data.name === obj1.data.name) // false
+    </script>
+  </body>
+</html>

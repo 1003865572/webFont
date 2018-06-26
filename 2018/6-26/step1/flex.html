@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a = [{"k":"性别","v":"[xìng bié] sex; sexual distinction; sexuality;"},{"k":"性别歧视","v":"sexualgender discrimination;"},{"k":"性别差异","v":"sex difference;"},{"k":"性别的","v":"sexual;"},{"k":"性别失衡","v":"sexual imbalance;"}]
+        console.log(a);
+    </script>
+    <style>
+        * {
+            font-size: 12px;
+        }
+        .parent3, .parent2, .parent{
+            width: 200px;
+            display: flex;
+        }
+        .parent3 div, .parent2 div, .parent div{
+            height: 100px;
+            background: #ccc;
+            box-sizing: border-box;
+            border: 1px solid #000;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .parent div:first-of-type{
+            flex: 0 0 auto;
+            width: 100px;
+        }
+        .parent div:last-of-type{
+            flex: 1 0 auto;
+            width: 50px;
+        }
+    </style>
+    <p>1. 子元素 width 总和 < 父元素 width, 需要扩张</p>
+    <div class="parent">
+        <div>100px<br /> flex-grow: 0</div>
+        <div>50px<br /> flex-grow: 1</div>
+    </div>
+    <pre lang="css">
+    .parent{
+        width: 200px;
+        display: flex;
+    }
+    .parent div:first-of-type{
+        flex: 0 0 auto; // 不占用剩余空白
+        width: 100px;
+    }
+    .parent div:last-of-type{
+        flex: 1 0 auto; //占用剩余空白
+        width: 50px;
+    }
+    </pre>
+    <p>2. 子元素 width 总和 > 父元素 width, 需要收缩</p>
+    <div class="parent2">
+        <div>100px<br /> flex-shrink: 2</div>
+        <div>200px<br /> flex-shrink: 0</div>
+    </div>
+    <style>
+        .parent2 div:first-of-type{
+            flex: 1 0 auto;
+            width: 100px;
+        }
+        .parent2 div:last-of-type{
+            flex: 1 2 auto;
+            width: 200px;
+        }
+    </style>
+    <pre lang="css">
+    .parent{
+        width: 200px;
+        display: flex;
+    }
+    .parent div:first-of-type{
+        flex: 1 0 auto; // 不收缩
+        width: 100px;
+    }
+    .parent div:last-of-type{
+        flex: 1 2 auto; // 总 width 超出100px, 但是搜索率为 50%
+        width: 200px;
+    }
+    </pre>
+    <p>3. basic 顶替了 width</p>
+    
+    <div class="parent3">
+        <div>100px<br /> flex-basic: 100px</div>
+        <div>200px<br /> flex-basic: 100px</div>
+    </div>
+    <style>
+        .parent3 div:first-of-type{
+            flex: 1 0 100px;
+            width: 100px;
+        }
+        .parent3 div:last-of-type{
+            flex: 1 0 100px;
+            width: 200px;
+        }
+    </style>
+    <pre lang="css">
+    .parent{
+        width: 200px;
+        display: flex;
+    }
+    .parent div:first-of-type{
+        flex: 1 0 100px;
+        width: 100px;
+    }
+    .parent div:last-of-type{
+        flex: 1 0 100px;
+        width: 200px;   // 200px 失效
+    }
+    </pre>
+</body>
+</html>
